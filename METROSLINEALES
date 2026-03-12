@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zoclo Pro | Pisos y Azulejos Acosta</title>
+    <style>
+        :root {
+            --primary: #e8621a;
+            --primary-dark: #b84d14;
+            --primary-glow: rgba(232, 98, 26, 0.3);
+            --accent: #f39c12;
+            --bg: #0d0d1a;
+            --bg2: #13132a;
+            --card: #1a1a35;
+            --card2: #22224a;
+            --border: rgba(255,255,255,0.08);
+            --text: #f0f0f0;
+            --text2: #9999bb;
+            --text3: #6666aa;
+            --success: #27ae60;
+            --error: #e74c3c;
+            --shadow: 0 30px 80px rgba(0,0,0,0.6);
+        }
+
+        [data-theme="light"] {
+            --bg: #f0f2f8;
+            --bg2: #e4e8f5;
+            --card: #ffffff;
+            --card2: #f5f7ff;
+            --border: rgba(0,0,0,0.08);
+            --text: #1a1a35;
+            --text2: #555577;
+            --text3: #8888aa;
+            --shadow: 0 30px 80px rgba(0,0,0,0.15);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            transition: background 0.3s;
+        }
+
+        /* ── CARD ── */
+        .card {
+            background: var(--card);
+            width: 100%;
+            max-width: 500px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: background 0.3s;
+        }
+
+        /* ── HEADER ── */
+        .header {
+            background: linear-gradient(135deg, #0d0d1a 0%, #1a0a30 100%);
+            padding: 28px 25px 22px;
+            text-align: center;
+            position: relative;
+            border-bottom: 2px solid var(--primary);
+            overflow: hidden;
+        }
+
+        [data-theme="light"] .header {
+            background: linear-gradient(135deg, #1a1a35 0%, #2d1a50 100%);
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -60px; left: 50%;
+            transform: translateX(-50%);
+            width: 200px; height: 200px;
+            background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .brand {
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            color: #fff;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            font-size: 13px;
+            color: rgba(255,255,255,0.45);
+            margin-top: 5px;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 18px; right: 18px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: white;
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex; align-items: center; justify-content: center;
+            transition: 0.2s;
+        }
+
+        .theme-toggle:hover { background: rgba(255,255,255,0.2); }
+
+        /* ── CONTENT ── */
+        .content { padding: 28px 25px; }
+
+        /* ── FORM ── */
+        .form-group { margin-bottom: 18px; }
+
+        .row-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text2);
+            margin-bottom: 7px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .input-wrap { position: relative; }
+
+        .input-icon {
+            position: absolute;
+            left: 13px; top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 13px 14px 13px 38px;
+            background: var(--card2);
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 15px;
+            color: var(--text);
+            transition: 0.2s;
+            appearance: none;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px var(--primary-glow);
+            background: var(--card);
+        }
+
+        input.err { border-color: var(--error); box-shadow: 0 0 0 4px rgba(231,76,60,0.2); }
+
+        .err-msg {
+            color: var(--error);
+            font-size: 11px;
+            margin-top: 5px;
+            display: none;
+            font-weight: 600;
+        }
+
+        /* ── BUTTON ── */
+        .btn-calc {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            transition: all 0.25s;
+            position: relative;
+            overflow: hidden;
+            margin-top: 6px;
+        }
+
+        .btn-calc::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+            opacity: 0;
+            transition: 0.2s;
+        }
+
+        .btn-calc:hover { transform: translateY(-2px); box-shadow: 0 10px 30px var(--primary-glow); }
+        .btn-calc:hover::after { opacity: 1; }
+        .btn-calc:active { transform: translateY(0); }
+
+        .btn-clear {
+            width: 100%;
+            padding: 12px;
+            background: transparent;
+            color: var(--text3);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 18px;
+            transition: 0.2s;
+        }
+
+        .btn-clear:hover { background: var(--card2); color: var(--text2); }
+
+        /* ── RESULT ── */
+        #result-area {
+            margin-top: 24px;
+            display: none;
+        }
+
+        .res-hero {
+            background: linear-gradient(135deg, var(--primary) 0%, #c0392b 100%);
+            border-radius: 14px;
+            padding: 24px 20px;
+            text-align: center;
+            margin-bottom: 16px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 15px 40px var(--primary-glow);
+        }
+
+        .res-hero::before {
+            content: '';
+            position: absolute;
+            top: -40px; right: -40px;
+            width: 120px; height: 120px;
+            background: rgba(255,255,255,0.07);
+            border-radius: 50%;
+        }
+
+        .res-hero::after {
+            content: '';
+            position: absolute;
+            bottom: -30px; left: -20px;
+            width: 90px; height: 90px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+        }
+
+        .res-num {
+            font-size: 72px;
+            font-weight: 900;
+            color: white;
+            line-height: 1;
+            letter-spacing: -3px;
+        }
+
+        .res-unit {
+            font-size: 14px;
+            color: rgba(255,255,255,0.7);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 6px;
+            font-weight: 600;
+        }
+
+        .res-sub {
+            font-size: 12px;
+            color: rgba(255,255,255,0.5);
+            margin-top: 4px;
+        }
+
+        /* ── PROGRESS BAR ── */
+        .progress-wrap {
+            background: var(--card2);
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin-bottom: 16px;
+            border: 1px solid var(--border);
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text2);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .progress-bar-bg {
+            background: var(--border);
+            border-radius: 99px;
+            height: 8px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            border-radius: 99px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 0%;
+        }
+
+        /* ── DETAILS ── */
+        .details {
+            background: var(--card2);
+            border-radius: 14px;
+            padding: 18px;
+            border: 1px solid var(--border);
+        }
+
+        .details-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text3);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 14px;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 9px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .detail-item:last-child { border-bottom: none; }
+
+        .di-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text2);
+            font-size: 13px;
+        }
+
+        .di-icon { font-size: 14px; opacity: 0.7; }
+
+        .di-val {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        /* ── HISTORY ── */
+        .history-section {
+            margin-top: 24px;
+        }
+
+        .history-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text3);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .history-clear {
+            background: none;
+            border: none;
+            color: var(--error);
+            font-size: 11px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: opacity 0.2s;
+        }
+
+        .history-clear:hover { opacity: 0.7; }
+
+        #history-list { display: flex; flex-direction: column; gap: 8px; }
+
+        .history-item {
+            background: var(--card2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-10px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+
+        .hi-left { color: var(--text2); line-height: 1.4; }
+        .hi-left strong { color: var(--text); display: block; font-size: 13px; }
+        .hi-cajas {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        /* ── NOTA ── */
+        .nota {
+            font-size: 11px;
+            color: var(--text3);
+            text-align: center;
+            margin-top: 20px;
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        /* ── ANIMATIONS ── */
+        @keyframes popIn {
+            0%   { transform: scale(0.5); opacity: 0; }
+            70%  { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .pop { animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <div class="header">
+        <button class="theme-toggle" onclick="toggleTheme()" title="Cambiar tema">🌙</button>
+        <div class="brand">🧱 Pisos y Azulejos Acosta</div>
+        <h1>Calculadora de Zoclo</h1>
+        <p>Cálculo profesional de cajas por corte real</p>
+    </div>
+
+    <div class="content">
+        <div class="form-group">
+            <label>Metros Lineales Requeridos</label>
+            <div class="input-wrap">
+                <span class="input-icon">📏</span>
+                <input type="number" id="ml" placeholder="Ej. 70" step="0.1" min="0.1">
+            </div>
+            <div class="err-msg" id="err-ml">⚠ Ingresa los metros lineales.</div>
+        </div>
+
+        <div class="row-2">
+            <div class="form-group">
+                <label>Altura del Zoclo (cm)</label>
+                <div class="input-wrap">
+                    <span class="input-icon">↕</span>
+                    <input type="number" id="altura" value="9" min="1" step="0.5">
+                </div>
+                <div class="err-msg" id="err-alt">⚠ Altura inválida.</div>
+            </div>
+            <div class="form-group">
+                <label>Desperdicio</label>
+                <div class="input-wrap">
+                    <span class="input-icon">♻</span>
+                    <select id="desp">
+                        <option value="1.05">5% — Normal</option>
+                        <option value="1.10">10% — Mucho corte</option>
+                        <option value="1.15">15% — Complejo</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Formato de la Pieza</label>
+            <div class="input-wrap">
+                <span class="input-icon">⬛</span>
+                <select id="formato">
+                    <option value="6|16|100">16×100 cm — (6 pz/caja)</option>
+                    <option value="12|18|50">18×50 cm — (12 pz/caja)</option>
+                    <option value="15|18|60">18×60 cm — (15 pz/caja)</option>
+                    <option value="6|18|100">18×100 cm — (6 pz/caja)</option>
+                    <option value="5|19|122">19×122 cm — (5 pz/caja)</option>
+                    <option value="38|20|20">20×20 cm — (38 pz/caja)</option>
+                    <option value="30|20|30">20×30 cm — (30 pz/caja)</option>
+                    <option value="14|22|60">22×60 cm — (14 pz/caja)</option>
+                    <option value="6|25|100">25×100 cm — (6 pz/caja)</option>
+                    <option value="10|28|60">28×60 cm — (10 pz/caja)</option>
+                    <option value="10|30|45">30×45 cm — (10 pz/caja)</option>
+                    <option value="14|35|35">35×35 cm — (14 pz/caja)</option>
+                    <option value="10|35|50">35×50 cm — (10 pz/caja)</option>
+                    <option value="14|36|36">36×36 cm — (14 pz/caja)</option>
+                    <option value="15|37|37">37×37 cm — (15 pz/caja)</option>
+                    <option value="10|40|40">40×40 cm — (10 pz/caja)</option>
+                    <option value="8|45|45">45×45 cm — (8 pz/caja)</option>
+                    <option value="3|50|100">50×100 cm — (3 pz/caja)</option>
+                    <option value="3|51|102">51×102 cm — (3 pz/caja)</option>
+                    <option value="5|55|55">55×55 cm — (5 pz/caja)</option>
+                    <option value="4|59.6|59.6">59.6×59.6 cm — (4 pz/caja)</option>
+                    <option value="2|59.6|119.4">59.6×119.4 cm — (2 pz/caja)</option>
+                    <option value="4|60|60">60×60 cm — (4 pz/caja)</option>
+                    <option value="5|60|60">60×60 cm — (5 pz/caja)</option>
+                    <option value="2|60|120">60×120 cm — (2 pz/caja)</option>
+                    <option value="5|61|61">61×61 cm — (5 pz/caja)</option>
+                    <option value="2|61|122">61×122 cm — (2 pz/caja)</option>
+                    <option value="5|62|62">62×62 cm — (5 pz/caja)</option>
+                </select>
+            </div>
+        </div>
+
+        <button class="btn-calc" onclick="calcular()">⚡ Calcular Cajas</button>
+
+        <div id="result-area">
+            <div class="res-hero">
+                <div class="res-num pop" id="res-cajas">0</div>
+                <div class="res-unit">Cajas a Pedir</div>
+                <div class="res-sub" id="res-sub-text">—</div>
+            </div>
+
+            <div class="progress-wrap">
+                <div class="progress-label">
+                    <span>Eficiencia de la caja</span>
+                    <span id="prog-pct">—</span>
+                </div>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" id="prog-bar"></div>
+                </div>
+            </div>
+
+            <div class="details">
+                <div class="details-title">📋 Desglose del cálculo</div>
+                <div class="detail-item">
+                    <div class="di-left"><span class="di-icon">✂️</span> Tiras por pieza</div>
+                    <div class="di-val" id="res-tiras">—</div>
+                </div>
+                <div class="detail-item">
+                    <div class="di-left"><span class="di-icon">↕</span> Altura real (con mella)</div>
+                    <div class="di-val" id="res-altreal">—</div>
+                </div>
+                <div class="detail-item">
+                    <div class="di-left"><span class="di-icon">↔</span> Largo de cada tira</div>
+                    <div class="di-val" id="res-largo">—</div>
+                </div>
+                <div class="detail-item">
+                    <div class="di-left"><span class="di-icon">📦</span> Rendimiento por pieza</div>
+                    <div class="di-val" id="res-ml-pza">—</div>
+                </div>
+                <div class="detail-item">
+                    <div class="di-left"><span class="di-icon">🗃️</span> Rendimiento por caja</div>
+                    <div class="di-val" id="res-ml-caja">—</div>
+                </div>
+                <div class="detail-item">
+                    <div class="di-left"><span class="di-icon">📐</span> ML con desperdicio</div>
+                    <div class="di-val" id="res-ml-total">—</div>
+                </div>
+            </div>
+
+            <button class="btn-clear" onclick="limpiar()">🔄 Nuevo cálculo</button>
+        </div>
+
+        <div class="history-section" id="history-section" style="display:none">
+            <div class="history-title">
+                <span>🕓 Historial</span>
+                <button class="history-clear" onclick="clearHistory()">Borrar todo</button>
+            </div>
+            <div id="history-list"></div>
+        </div>
+
+        <p class="nota">* Mella de disco: 1.5 mm por corte. Resultado redondeado a cajas completas.</p>
+    </div>
+</div>
+
+<script>
+    let history = [];
+
+    function toggleTheme() {
+        const html = document.documentElement;
+        const isDark = html.getAttribute('data-theme') === 'dark';
+        html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+        document.querySelector('.theme-toggle').textContent = isDark ? '🌙' : '☀️';
+    }
+
+    function animateNumber(el, target, duration = 600) {
+        const start = performance.now();
+        const from = 0;
+        function update(now) {
+            const t = Math.min((now - start) / duration, 1);
+            const ease = 1 - Math.pow(1 - t, 3);
+            el.textContent = Math.round(from + (target - from) * ease);
+            if (t < 1) requestAnimationFrame(update);
+        }
+        requestAnimationFrame(update);
+    }
+
+    function calcular() {
+        const mlNec   = parseFloat(document.getElementById('ml').value);
+        const hSoclo  = parseFloat(document.getElementById('altura').value);
+        const desp    = parseFloat(document.getElementById('desp').value);
+        const datos   = document.getElementById('formato').value.split('|');
+        const fmtText = document.getElementById('formato').selectedOptions[0].text;
+
+        let ok = true;
+
+        const inputMl  = document.getElementById('ml');
+        const inputAlt = document.getElementById('altura');
+
+        if (!mlNec || mlNec <= 0) {
+            inputMl.classList.add('err');
+            document.getElementById('err-ml').style.display = 'block';
+            ok = false;
+        } else {
+            inputMl.classList.remove('err');
+            document.getElementById('err-ml').style.display = 'none';
+        }
+
+        if (!hSoclo || hSoclo <= 0) {
+            inputAlt.classList.add('err');
+            document.getElementById('err-alt').textContent = "⚠ Altura inválida.";
+            document.getElementById('err-alt').style.display = 'block';
+            ok = false;
+        } else {
+            inputAlt.classList.remove('err');
+            document.getElementById('err-alt').style.display = 'none';
+        }
+
+        if (!ok) return;
+
+        const pzCaja    = parseInt(datos[0]);
+        const dim1      = parseFloat(datos[1]);
+        const dim2      = parseFloat(datos[2]);
+        const largoTira = Math.max(dim1, dim2);
+        const ladoCort  = Math.min(dim1, dim2);
+        const mella     = 0.15; // 1.5mm en cm
+
+        // Lógica Acosta: Dividir el lado corto por la altura nominal pedida
+        const tirasPza = Math.floor(ladoCort / hSoclo);
+
+        if (tirasPza <= 0) {
+            document.getElementById('err-alt').textContent = `⚠ La altura (${hSoclo}cm) supera el ancho de la pieza (${ladoCort}cm).`;
+            document.getElementById('err-alt').style.display = 'block';
+            inputAlt.classList.add('err');
+            return;
+        }
+
+        const cortesNec  = tirasPza - 1;
+        const altReal    = (ladoCort - cortesNec * mella) / tirasPza;
+        const mlPza      = tirasPza * (largoTira / 100);
+        const mlCaja     = mlPza * pzCaja;
+        const mlTotal    = mlNec * desp;
+        const cajas      = Math.ceil(mlTotal / mlCaja);
+        const eficiencia = Math.min(100, ((mlTotal / (cajas * mlCaja)) * 100));
+
+        // Animar número
+        const resEl = document.getElementById('res-cajas');
+        resEl.classList.remove('pop');
+        void resEl.offsetWidth; // Forzar reflow para reiniciar animación
+        resEl.classList.add('pop');
+        animateNumber(resEl, cajas);
+
+        document.getElementById('res-sub-text').textContent  = `${mlNec} ML · ${fmtText.split('—')[0].trim()}`;
+        document.getElementById('res-tiras').textContent     = `${tirasPza} tiras`;
+        document.getElementById('res-altreal').textContent   = `${altReal.toFixed(2)} cm`;
+        document.getElementById('res-largo').textContent     = `${largoTira} cm`;
+        document.getElementById('res-ml-pza').textContent    = `${mlPza.toFixed(2)} ML`;
+        document.getElementById('res-ml-caja').textContent   = `${mlCaja.toFixed(2)} ML`;
+        document.getElementById('res-ml-total').textContent  = `${mlTotal.toFixed(2)} ML`;
+
+        // Barra de eficiencia
+        document.getElementById('prog-pct').textContent = `${eficiencia.toFixed(1)}%`;
+        setTimeout(() => {
+            document.getElementById('prog-bar').style.width = eficiencia + '%';
+        }, 100);
+
+        // Mostrar resultado
+        const ra = document.getElementById('result-area');
+        ra.style.display = 'block';
+        ra.style.animation = 'none';
+        void ra.offsetWidth;
+        ra.style.animation = 'slideIn 0.4s ease';
+
+        // Historial
+        history.unshift({ cajas, mlNec, hSoclo, fmt: fmtText.split('—')[0].trim(), desp: Math.round((desp - 1) * 100) });
+        if (history.length > 5) history.pop();
+        renderHistory();
+    }
+
+    function renderHistory() {
+        const list = document.getElementById('history-list');
+        const sec  = document.getElementById('history-section');
+        if (history.length === 0) { sec.style.display = 'none'; return; }
+        sec.style.display = 'block';
+        list.innerHTML = history.map(h => `
+            <div class="history-item">
+                <div class="hi-left">
+                    <strong>${h.fmt}</strong>
+                    ${h.mlNec} ML · ${h.hSoclo} cm · +${h.desp}% Desp.
+                </div>
+                <div class="hi-cajas">${h.cajas}</div>
+            </div>
+        `).join('');
+    }
+
+    function clearHistory() {
+        history = [];
+        renderHistory();
+    }
+
+    function limpiar() {
+        document.getElementById('ml').value = '';
+        document.getElementById('altura').value = '9';
+        document.getElementById('desp').selectedIndex = 0;
+        document.getElementById('formato').selectedIndex = 0;
+        document.getElementById('result-area').style.display = 'none';
+        document.getElementById('ml').classList.remove('err');
+        document.getElementById('altura').classList.remove('err');
+        document.getElementById('err-ml').style.display = 'none';
+        document.getElementById('err-alt').style.display = 'none';
+        document.getElementById('prog-bar').style.width = '0%';
+        document.getElementById('ml').focus();
+    }
+</script>
+
+</body>
+</html>
